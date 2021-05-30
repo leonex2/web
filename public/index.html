@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Data : </p>
+    <div id="data">
+        
+    </div>
+
+    <form action="/todo" method="POST">
+        <label for="todo">Title</label>
+        <input type="text" name="todo" id="todo"/>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+<script>
+    const getData = async () => {
+        const response = await fetch('/todo', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const jsonData = await response.json();
+        return jsonData
+    }
+    let data = getData()
+        .then(data => {
+            let html = "";
+            for (let i = 0 ; i < data.data.length ; i++) {
+                console.log(data.data[i]);
+                html += `<p>${data.data[i].todo}</p>`
+            }
+
+            const div = document.querySelector('#data');
+            div.insertAdjacentHTML('beforeend', html);
+        });
+</script>
+</html>
